@@ -52,4 +52,4 @@ fprintf(fid,'Wp                 = 10;\n');
 fprintf(fid,'maxnp              = 2000;\n');
 fprintf(fid,'smoo               = 0.25;\n');
 fprintf(fid,'getcov             = 1;\n');
-fclose(fid)
+fclose(fid);

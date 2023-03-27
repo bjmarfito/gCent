@@ -1,4 +1,4 @@
-function writeRunNAIn(gCentFile);
+function writeRunNAIn(gCentFile)
 
 run(gCentFile);
 NADIR       = [WORKDIR '/NA'];
