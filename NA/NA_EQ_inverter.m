@@ -15,7 +15,7 @@ else
 end
 niter;
 [datafiles Lp]
-smoo
+fprintf("smoo = %d\n",smoo)
 %initialize arrays
 np           = 0;
 resampstruct = [];
