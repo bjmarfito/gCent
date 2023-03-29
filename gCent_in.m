@@ -2,12 +2,11 @@
 % Input script for driving gCent
 
 %Event parameters
-eventID             = 'Nevada_20200515';
-eventID2            = 'nn00725272'
-eventLoc            = [-117.875 38.159 0];       %Lon, lat, depth
-eventSDR            = [73 78 -24];                %Event Strike, dip, rake
-eventMag            = 7;                           %Event magnitude
-eventDate           = [2020 05 15];             % Event date, year, month, day
+eventID             = 'Afghanistan_20220621';      % An event ID for identifying the event
+eventLoc            = [69.464 33.02, 4];       %Lon, lat, depth of the event
+eventSDR            = [204 87 -11];                %Event Strike, dip, rake of focal mechanism you wish to test
+eventMag            = 6.0;                           %Event magnitude, for scaling dimensions
+
 % Datafiles, split between InSAR, GPS, and optical sensors. 
 % Include all data files that you wish to include in the inversion, even if they've already been resampled.
 % Give full paths to processed directories
@@ -20,14 +19,16 @@ eventDate           = [2020 05 15];             % Event date, year, month, day
 %
 % GPS data: give full path to a .mat file
 
-insarDataFiles      = {'/Users/wbarnhart/Work_local/EQmonitoring/Nevada_20200515/p144/200510-200516/merged','/Users/wbarnhart/Work_local/EQmonitoring/Nevada_20200515/p64/200511-200517/merged'};
+insarDataFiles      = {'/Volumes/BJM_EOS-RS/Afghanistan_2022/modelling/gcent/Afghanistan_20220621/RESAMP/p30/210308-220627'};
 opticalDataFilesEW  = {};
 opticalDataFilesNS  = {};
-gpsTimeSeriesDir    = {};
+gpsDataFiles        = {''};
+gpsTimeSeriesDir = {};
 
 
-WORKDIR             = ['/Users/wbarnhart/Work_local/EQmonitoring/' eventID];
+WORKDIR             = ['/Volumes/BJM_EOS-RS/Afghanistan_2022/modelling/gcent/' eventID];
 
 %Elevation of water in dem.crop file. Used to crop out water areas. To skip
 %water masking, set waterElev = [];
-waterElev           = [];
+corThresh           = 0.6;
+waterElev           = [-30]; %Leave this empty if there's no water to mask
