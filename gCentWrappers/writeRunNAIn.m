@@ -12,7 +12,7 @@ fid         = fopen([NADIR '/run_na_params.m'],'w');
 
 
 
-% allFiles    = [insarDataFiles opticalDataFilesEW opticalDataFilesNS gpsDataFiles];
+allFiles    = [insarDataFiles opticalDataFilesEW opticalDataFilesNS gpsDataFiles];
 
 
 load([RESAMPDIR '/fault.mat']);
@@ -37,15 +37,15 @@ for k=1:length(insarDataFiles)
         path         = tokens{end-2};
     end
     
-    if(isfile([RESAMPDIR '/' datePair '_' path '.mat']));
-    resampFiles{k}  = [RESAMPDIR '/' datePair '_' path '.mat'];
+    if(isfile([RESAMPDIR '/' datePair '_' path '.mat']))
+        resampFiles{k}  = [RESAMPDIR '/' datePair '_' path '.mat'];
     else
         error(['Could not find resampled data for ' allFiles{k}]);
     end
     
 end
 
-if(isempty(gpsTimeSeriesDir)~=1);
+if(isempty(gpsTimeSeriesDir)~=1)
     if(isempty(k))
         k=1;
     else
@@ -78,15 +78,15 @@ end
 % Set rake ranges
 if rake<=180&rake>=135
     rakes = [120 180]; %Right lateral Reverse
-elseif rake<135&rake>=90;
+elseif rake<135&rake>=90
     rakes = [80 145]; %Reverse righ lateral
-elseif rake<90&rake>=45;
+elseif rake<90&rake>=45
     rakes = [40 100]; %Reverse left-lateral
-elseif rake<45 & rake >=0; 
+elseif rake<45 & rake >=0
     rakes = [0 60]; %Left-lateral reverse
-elseif rake<0&rake>=-45;
+elseif rake<0&rake>=-45
     rakes = [-60 0]; %Left-lateral normal
-elseif rake<-45 &rake>-90;
+elseif rake<-45 &rake>-90
     rakes = [-100 -40]; %Normal left-lateral
 elseif rake<-90&rake>=-135
     rakes = [-145 -80]; % Normal right-lateral
@@ -97,11 +97,7 @@ else
 end
 
 
-
 dips        = [dip-30 dip+30];
-
-
-
 
 fprintf(fid,'datafiles      = {');
 for k=1:length(resampFiles)
@@ -111,8 +107,6 @@ for k=1:length(resampFiles)
         fprintf(fid,'''%s''};\n',resampFiles{k});
     end
 end
-
-
 
 fprintf(fid,'%na params\n');
 fprintf(fid,'ns       = 5000; \n');
