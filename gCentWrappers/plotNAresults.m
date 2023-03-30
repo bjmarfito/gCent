@@ -63,7 +63,7 @@ for k=1:length(allnp)
     c.Label.String = 'dLOS (m)';
     title('Residual')
     
-    suptitle(filename)
+    sgtitle(filename)
     
     saveas(h,[NADIR '/run_' num2str(pid) '/' filename '.png']);
     close(h)
