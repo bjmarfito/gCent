@@ -83,7 +83,7 @@ drange     = diff(ranges,1);
 if(old)
     id     = find(misfit==min(misfit));
     oldmod = models(:,id);
-    [oldres,oldslip,oldresnorm,out,oldsynth]=forward_EQ(models(:,id),xytype,resampstruct);
+    [~,oldslip,oldresnorm,~,oldsynth]=forward_EQ(models(:,id),xytype,resampstruct);
     oldres = data'-oldsynth;
 end
 
@@ -103,7 +103,7 @@ if(startcount==0)
     disp(['Setting up ' num2str(ns) ' initial models'])
     for j=1:ns
         tic
-        [res,slip] = forward_EQ(models(:,j),xytype,resampstruct);
+        [res,~] = forward_EQ(models(:,j),xytype,resampstruct);
         misfit(j)  = sum(res(1:np).^2)/np;
         update_time
         EQt=EQt+tmp;
@@ -130,7 +130,7 @@ end
 close(h)
 
 id=find(misfit==min(misfit));
-[res,slip,resnorm,out,synth]=forward_EQ(models(:,id),xytype,resampstruct);
+[~,slip,resnorm,out,synth]=forward_EQ(models(:,id),xytype,resampstruct);
 res=data'-synth;
 bigid = find(slip(1:Npatch)==max(slip(1:Npatch)));
 
@@ -151,7 +151,7 @@ fclose(fid);
 mu  = 3.3e10;
 mom = sum(abs(slip(1:end-nramp)))*out(1).L*out(1).W*mu;
 M0  = mom*1e7;
-Mw  = log10(M0)/1.5-10.73
+Mw  = log10(M0)/1.5-10.73;
 
 
 %return
