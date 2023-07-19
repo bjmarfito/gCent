@@ -1,4 +1,4 @@
-function writeResampIn(toResample, gCentFile);
+function writeResampIn(toResample, gCentFile)
 
 run(gCentFile);
 
@@ -42,7 +42,7 @@ elseif sensorName == "ALOS"
 
 end
 
-savestructname    = [resampDir '/' datePair '_' path '.mat']
+savestructname    = [resampDir '/' datePair '_' path '.mat'];
 
 
 
@@ -54,12 +54,9 @@ fprintf(fid,'corrfilename       = '''';\n');
 fprintf(fid,'demfilename        = ''%s'';\n', demfilename);
 fprintf(fid,'faultfilename      = ''%s'';\n', faultfilename);
 fprintf(fid,'savestructname     = ''%s'';\n', savestructname);
-if processor == "ISCE"
-    fprintf(fid,'processor          = ''%s'';\n', 'ISCE');
-elseif processor == "ISCEMINTPY"
-    fprintf(fid,'processor          = ''%s'';\n', 'ISCEMINTPY');
-    fprintf(fid,'iscestack          = ''%s'';\n', 'alosStack');
-end
+fprintf(fid,'processor          = ''%s'';\n', processor);
+%fprintf(fid,'processor          = ''%s'';\n', 'ISCEMINTPY');
+fprintf(fid,'iscestack          = ''%s'';\n', iscestack);
 fprintf(fid,'nx                 = 0;\n');
 fprintf(fid,'ny                 = 0;\n');
 fprintf(fid,'cropX              = '''';\n');
@@ -77,3 +74,4 @@ fprintf(fid,'maxnp              = 2000;\n');
 fprintf(fid,'smoo               = 0.25;\n');
 fprintf(fid,'getcov             = 2;\n');
 fclose(fid);
+end

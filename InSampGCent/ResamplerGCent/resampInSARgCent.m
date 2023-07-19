@@ -5,12 +5,10 @@ resampDir       = [WORKDIR '/RESAMP'];
 resampInFile    = [resampDir '/resamp_in.m'];
 
 run(resampInFile);
-if processor == "ISCE"
-    iscestack = 999;
-    datastruct = loadData(processor,datafilename,zone,limitny,azo,const_los,losfilename,nx,ny,iscestack);
-elseif processor == "ISCEMINTPY"
-    datastruct = loadData(processor,datafilename,zone,limitny,azo,const_los,losfilename,nx,ny,iscestack);
-end
+
+datastruct = loadData(processor,datafilename,zone,limitny,azo,const_los,losfilename,nx,ny,iscestack);
+%datastruct = loadData(processor,datafilename,zone,limitny,azo,const_los,losfilename,nx,ny,iscestack);
+
  if exist(corrfilename)
 %     corStruct   = loadData(processor,corrfilename,zone,[],[],[],[]);
     corStruct = loadISCE(corrfilename,zone,limitny,azo,0);

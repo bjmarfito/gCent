@@ -21,6 +21,8 @@ eventDate           = [2020 05 15];             % Event date, year, month, day
 % GPS data: give full path to a .mat file
 
 insarDataFiles      = {'/Users/wbarnhart/Work_local/EQmonitoring/Nevada_20200515/p144/200510-200516/merged','/Users/wbarnhart/Work_local/EQmonitoring/Nevada_20200515/p64/200511-200517/merged'};
+processor       = 'MINTPY';                                                 % Can be 'ISCE', 'ISCE_MAI', 'MINTPY', 'ROIPAC', or 'GMT'. GMT inputs should be convertedto .xyz files prior to running using grd2xyz. Compatible only with MINTPY outputs generated from ISCE
+iscestack       = 'topsStack';                                              % Specify if ISCE stack processor used is topsStack or alosStack. Leave empty when not using MINTPY processor
 opticalDataFilesEW  = {};
 opticalDataFilesNS  = {};
 gpsTimeSeriesDir    = {};
