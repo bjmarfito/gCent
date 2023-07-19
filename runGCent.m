@@ -47,9 +47,9 @@ switch steps
         end
         
         
-        if(isempty(gpsTimeSeriesDir)~=1);
-            doGPSoffsets(gCentFile);
-        end
+%         if(isempty(gpsTimeSeriesDir)~=1);
+%             doGPSoffsets(gCentFile);
+%         end
         %         doOpticalResample(gCentFile);
         runNA(gCentFile);
     case 'resample'
@@ -62,9 +62,9 @@ switch steps
         end
         
         
-        if(isempty(gpsTimeSeriesDir)~=1);
-            doGPSoffsets(gCentFile);
-        end
+%         if(isempty(gpsTimeSeriesDir)~=1);  
+%             doGPSoffsets(gCentFile);
+%         end
     case 'inversion'
         runNA(gCentFile);
 end
