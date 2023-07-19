@@ -15,12 +15,12 @@ fprintf(fid,'Str/Dip/Rake\t\t%3.0f/%2.0f/%0.0f\n',round(out.strike), round(out.d
 fprintf(fid,'Len/Wid (km)\t\t%3.2f/%3.2f\n',out.L/1e3, out.W/1e3);
 fclose(fid)
 
-fid= fopen([saveDir '/shakemap_polygon.txt'],'w');
-fprintf(fid,'#Source: Barnhart Geodetic Centroid Finite Fault\n');
-fprintf(fid,'#Event ID: %s\n', eventID2);
-fprintf(fid,'#Model created: %s\n',datestr(now));
-for k=1:4
-	fprintf(fid,'%f %f %f\n',lon(k),lat(k),out.zfault(k)/1e3);
-end
-fprintf(fid,'%f %f %f\n',lon(1),lat(1),out.zfault(1)/1e3);
-fclose(fid);
+% fid= fopen([saveDir '/shakemap_polygon.txt'],'w');
+% fprintf(fid,'#Source: Barnhart Geodetic Centroid Finite Fault\n');
+% fprintf(fid,'#Event ID: %s\n', eventID2);
+% fprintf(fid,'#Model created: %s\n',datestr(now));
+% for k=1:4
+% 	fprintf(fid,'%f %f %f\n',lon(k),lat(k),out.zfault(k)/1e3);
+% end
+% fprintf(fid,'%f %f %f\n',lon(1),lat(1),out.zfault(1)/1e3);
+% fclose(fid);

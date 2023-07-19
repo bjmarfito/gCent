@@ -7,7 +7,7 @@ if(isfolder(resampDir)==0)
 end
 
 
-[Xc,Yc,zone]       = my_utm2ll(eventLoc(1), eventLoc(2),2);
+[Xc,Yc,zone]       = my_utm2ll(eventLoc(1), eventLoc(2),2,zoneCoords);
 strike      = eventSDR(1);
 dip         = eventSDR(2);
 mag         = eventMag;

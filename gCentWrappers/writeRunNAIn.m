@@ -1,6 +1,6 @@
-function writeRunNAIn(gCentFile)
+function writeRunNAIn(gCentFile);
 
-run(gCentFile);
+run(gCentFile)
 NADIR       = [WORKDIR '/NA'];
 RESAMPDIR   = [WORKDIR '/RESAMP'];
 
@@ -12,7 +12,7 @@ fid         = fopen([NADIR '/run_na_params.m'],'w');
 
 
 
-allFiles    = [insarDataFiles opticalDataFilesEW opticalDataFilesNS gpsDataFiles];
+% allFiles    = [insarDataFiles opticalDataFilesEW opticalDataFilesNS gpsDataFiles];
 
 
 load([RESAMPDIR '/fault.mat']);
@@ -20,39 +20,66 @@ load([RESAMPDIR '/fault.mat']);
 strike      = eventSDR(1);
 dip         = eventSDR(2);
 rake        = eventSDR(3);
-[startX, startY] = my_utm2ll(eventLoc(1), eventLoc(2),2);
+[startX, startY] = my_utm2ll(eventLoc(1), eventLoc(2),2,zoneCoords);
 startL      = faultstruct.L;
 startW      = faultstruct.W;
 mag         = eventMag;
 
-for k=1:length(insarDataFiles)
-    filename    = insarDataFiles{k};
-    topsTest    = strfind(filename,'merged');
-    tokens      = strsplit(filename,'/');
-    if(isempty(topsTest))
-        datePair     = tokens{end};
-        path         = tokens{end-1};
-    else
-        datePair     = tokens{end-1};
-        path         = tokens{end-2};
+%% modified on 4 December 2022 to include ALOS data reading
+if sensorName == "SENTINEL"
+
+    for k=1:length(insarDataFiles)
+        filename    = insarDataFiles{k};
+        topsTest    = strfind(filename,'merged');
+        tokens      = strsplit(filename,'/');
+        if(isempty(topsTest))
+            datePair     = tokens{end};
+            path         = tokens{end-1};
+        else
+            datePair     = tokens{end-1};
+            path         = tokens{end-2};
+        end
+
+        if(isfile([RESAMPDIR '/' datePair '_' path '.mat']));
+            resampFiles{k}  = [RESAMPDIR '/' datePair '_' path '.mat'];
+        else
+            error(['Could not find resampled data for ' allFiles{k}]);
+        end
+
     end
-    
-    if(isfile([RESAMPDIR '/' datePair '_' path '.mat']))
-        resampFiles{k}  = [RESAMPDIR '/' datePair '_' path '.mat'];
-    else
-        error(['Could not find resampled data for ' allFiles{k}]);
+
+elseif sensorName == "ALOS"
+
+    for k=1:length(insarDataFiles)
+        filename    = insarDataFiles{k};
+        topsTest    = strfind(filename,'insar');
+        tokens      = strsplit(filename,'/');
+        if(isempty(topsTest))
+            datePair     = tokens{end};
+            path         = tokens{end-1};
+        else
+            datePair     = tokens{end-1};
+            path         = tokens{end-2};
+        end
+
+        if(isfile([RESAMPDIR '/' datePair '_' path '.mat']));
+            resampFiles{k}  = [RESAMPDIR '/' datePair '_' path '.mat'];
+        else
+            error(['Could not find resampled data for ' allFiles{k}]);
+        end
+
     end
-    
+
 end
 
-if(isempty(gpsTimeSeriesDir)~=1)
-    if(isempty(k))
-        k=1;
-    else
-        k=k+1;
-    end
-    resampFiles{k} = [RESAMPDIR '/gpsOffsets.mat'];
-end
+% if(isempty(gpsTimeSeriesDir)~=1);
+%     if(isempty(k))
+%         k=1;
+%     else
+%         k=k+1;
+%     end
+%     resampFiles{k} = [RESAMPDIR '/gpsOffsets.mat'];
+% end
 
     
 
@@ -61,11 +88,15 @@ if mag<5
     L = [10 5e3];
     W = [10 5e3];
 elseif mag>=5&mag<6
-    L=[100 20e3];
-    W=[100 20e3];
+    %L=[100 20e3];
+    %W=[100 20e3];
+    L=[3000 5000];
+    W=[1000 2900];
 elseif mag>=6&mag<=7
-    L=[5e3 30e3];
-    W=[5e3 30e3];
+    L=[1e3 30e3];
+    W=[1e3 30e3];
+    %%L=[7000 9000];
+    %%W=[5000 6500];
 elseif mag>7&mag<=8
     L=[30e3 150e3];
     W=[5e3 50e3];
@@ -78,15 +109,15 @@ end
 % Set rake ranges
 if rake<=180&rake>=135
     rakes = [120 180]; %Right lateral Reverse
-elseif rake<135&rake>=90
+elseif rake<135&rake>=90;
     rakes = [80 145]; %Reverse righ lateral
-elseif rake<90&rake>=45
+elseif rake<90&rake>=45;
     rakes = [40 100]; %Reverse left-lateral
-elseif rake<45 & rake >=0
+elseif rake<45 & rake >=0; 
     rakes = [0 60]; %Left-lateral reverse
-elseif rake<0&rake>=-45
+elseif rake<0&rake>=-45;
     rakes = [-60 0]; %Left-lateral normal
-elseif rake<-45 &rake>-90
+elseif rake<-45 &rake>-90;
     rakes = [-100 -40]; %Normal left-lateral
 elseif rake<-90&rake>=-135
     rakes = [-145 -80]; % Normal right-lateral
@@ -97,7 +128,11 @@ else
 end
 
 
+
 dips        = [dip-30 dip+30];
+
+
+
 
 fprintf(fid,'datafiles      = {');
 for k=1:length(resampFiles)
@@ -107,6 +142,8 @@ for k=1:length(resampFiles)
         fprintf(fid,'''%s''};\n',resampFiles{k});
     end
 end
+
+
 
 fprintf(fid,'%na params\n');
 fprintf(fid,'ns       = 5000; \n');
@@ -121,12 +158,18 @@ fprintf(fid,'xytype   = 1;    \n');
 fprintf(fid,'drake   = 0;    \n');
 fprintf(fid,'smoo    = 1; \n');
 
-
+%%hard-coded
+%strikes = [50 200];
+%dips = [50 90];
+%rakes = [-200 0];
 fprintf(fid,'p.radius = [0 25e3]; \n');
 fprintf(fid,'p.angle  = [0 360];\n');
 fprintf(fid,'p.strike = [%f %f];   \n',strike-20, strike+20);
-fprintf(fid,'p.dip    = [%f %f];\n', dips(1), dips(2));
+%fprintf(fid,'p.dip    = [%f %f];\n', dips(1), dips(2));
 fprintf(fid,'p.rake   = [%f %f];\n', rakes(1), rakes(2));
+%fprintf(fid,'p.strike = [%f %f];   \n',strikes(1), strikes(2));
+fprintf(fid,'p.dip    = [%f %f];\n', dips(1), dips(2));
+%fprintf(fid,'p.rake   = [%f %f];\n', rakes(1), rakes(2));
 fprintf(fid,'p.L      = [%f %f];\n', L(1), L(2));
 fprintf(fid,'p.W      = [%f %f];\n', W(1), W(2));
 fprintf(fid,'p.zs     = [0e3 50e3];\n');

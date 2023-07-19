@@ -5,10 +5,10 @@ toResample      = checkInSAR(gCentFile);
 
 %Check if starting fault (fault.mat) exists
 if(isfile([WORKDIR '/RESAMP/fault.mat']))
-    display('Fault file exists, skipping...');
+    disp('Fault file exists, skipping...');
     pause(3);
 else
-    display('Generating start fault from scaling relationships ... ');
+    disp('Generating start fault from scaling relationships ... ');
     generateStartFault(gCentFile);
     pause(3);
 end

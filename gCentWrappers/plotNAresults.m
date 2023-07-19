@@ -8,9 +8,9 @@ zone            = [savestruct.zone];
 
 %% Plot and Save Data, Synthetics, and Residuals
 if Mw < 6
-    rad = 25e3;
+    rad = 10e3;%default is 25km
 elseif Mw>=6&Mw<7
-    rad = 50e3;
+    rad = 100e3;
 elseif Mw>=7
     rad = 500e3;
 end
@@ -28,6 +28,8 @@ for k=1:length(allnp)
     idIn            = find(inpolygon(X1,Y1,xc,yc));
     data1           = data(tmp2:tmp);
     synth1          = synth(tmp2:tmp);
+    minn = -10;
+    maxx = 10;
     
     tokens      = strsplit(datafiles{k},'/');
     token       = strsplit(tokens{end},'.');
@@ -35,37 +37,66 @@ for k=1:length(allnp)
     token       = strsplit(filename,'_');
     filename    = [token{1} '-' token{2}];
     h = figure(1);
+
+    % calculate rms
+    rmss = rms((data1(idIn)'-synth1(idIn))*100);
+    fid = fopen([NADIR '/run_' num2str(pid) '/rms.txt'],'w');
+    fprintf(fid,'%.5f\n',rmss);
+    fclose(fid);
     
     subplot(1,3,1)
-    patch(blon1(:,idIn),blat1(:,idIn),data1(idIn));
+    patch(blon1(:,idIn),blat1(:,idIn),data1(idIn)*100);
     axis image
     shading flat
-    colormap jet
+    %colormap jet
+    crameri('vik')
     c=colorbar('southoutside');
-    c.Label.String = 'dLOS (m)';
+    c.Label.String = 'dLOS (cm)';
+    caxis([minn,maxx]);
     title('Displacements')
+    %save for checking
+    fid1 = fopen([NADIR '/run_' num2str(pid) '/datalos.txt'],'w');
+    fid2 = fopen([NADIR '/run_' num2str(pid) '/lonlos.txt'],'w');
+    fid3 = fopen([NADIR '/run_' num2str(pid) '/latlos.txt'],'w');
+    fprintf(fid1,'%.5f\n',data1(idIn)*100);
+    fprintf(fid2,'%.5f\n',lon(idIn));
+    fprintf(fid3,'%.5f\n',lat(idIn));
+    fclose(fid1);fclose(fid2);fclose(fid3);
     
     subplot(1,3,2)
-    patch(blon1(:,idIn),blat1(:,idIn),synth1(idIn));
+    patch(blon1(:,idIn),blat1(:,idIn),synth1(idIn)*100);
     axis image
     shading flat
-    colormap jet
+    %colormap jet
+    crameri('vik')
     c=colorbar('southoutside');
-    c.Label.String = 'dLOS (m)';
+    c.Label.String = 'dLOS (cm)';
+    caxis([minn,maxx]);
     title('Predicted')
+    %save for checking
+    fid1 = fopen([NADIR '/run_' num2str(pid) '/syntlos.txt'],'w');
+    fprintf(fid1,'%.5f\n',synth1(idIn)*100);
+    fclose(fid1);
     
     subplot(1,3,3)
-    patch(blon1(:,idIn),blat1(:,idIn),data1(idIn)'-synth1(idIn));
+    patch(blon1(:,idIn),blat1(:,idIn),(data1(idIn)'-synth1(idIn))*100);
     axis image
     shading flat
-    colormap jet
+    %colormap jet
+    crameri('vik')
     c=colorbar('southoutside');
-    c.Label.String = 'dLOS (m)';
+    c.Label.String = 'dLOS (cm)';
+    caxis([minn,maxx]);
     title('Residual')
+    %save for checking
+    fid1 = fopen([NADIR '/run_' num2str(pid) '/residlos.txt'],'w');
+    fprintf(fid1,'%.5f\n',(data1(idIn)'-synth1(idIn))*100);
+    fclose(fid1);
     
-    sgtitle(filename)
+    suptitle(filename)
     
     saveas(h,[NADIR '/run_' num2str(pid) '/' filename '.png']);
+    saveas(h,[NADIR '/run_' num2str(pid) '/' filename '.pdf']);
     close(h)
 end
 
