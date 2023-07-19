@@ -15,7 +15,7 @@ else
 end
 niter;
 [datafiles Lp]
-fprintf("smoo = %d\n",smoo)
+smoo
 %initialize arrays
 np           = 0;
 resampstruct = [];
@@ -141,6 +141,12 @@ ramp  = slip(end-nramp+1:end)'*rampg;
 fboxx = [out.xfault]-xref;
 fboxy = [out.yfault]-yref;
 fboxz = [out.zfault];
+
+% save ramp
+fid = fopen([NADIR '/run_' num2str(pid) '/ramp.txt'],'w');
+fprintf(fid,'%.5f\n',ramp);
+fclose(fid);
+
 
 mu  = 3.3e10;
 mom = sum(abs(slip(1:end-nramp)))*out(1).L*out(1).W*mu;
