@@ -12,8 +12,7 @@ datastruct = loadData(processor,datafilename,zone,limitny,azo,const_los,losfilen
 if perturbrednoise == 'y'
     [X, Y] = size(datastruct.data);
     disp("Adding red noise")
-    redNoiseAdd = rednoise(X,Y,1.33);
-    redNoiseAdd = round(redNoiseAdd)/10;
+    redNoiseAdd = rednoise(X,Y,1.33) ./ 100;
     datastruct.data = datastruct.data + redNoiseAdd;
     save redNoiseAdd [resampDir '/redNoiseAdd.mat']
     clear redNoiseAdd
