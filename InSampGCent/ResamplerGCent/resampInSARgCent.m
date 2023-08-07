@@ -1,4 +1,4 @@
-function resampInSARgCent(gCentFile);
+function resampInSARgCent(gCentFile)
 
 run(gCentFile);
 resampDir       = [WORKDIR '/RESAMP'];
@@ -9,7 +9,17 @@ run(resampInFile);
 datastruct = loadData(processor,datafilename,zone,limitny,azo,const_los,losfilename,nx,ny,iscestack);
 %datastruct = loadData(processor,datafilename,zone,limitny,azo,const_los,losfilename,nx,ny,iscestack);
 
- if exist(corrfilename)
+if perturbrednoise == 'y'
+    [X, Y] = size(datastruct.data);
+    disp("Adding red noise")
+    redNoiseAdd = rednoise(X,Y,1.33);
+    redNoiseAdd = round(redNoiseAdd)/10;
+    datastruct.data = datastruct.data + redNoiseAdd;
+    save redNoiseAdd [resampDir '/redNoiseAdd.mat']
+    clear redNoiseAdd
+end
+
+if exist(corrfilename)
 %     corStruct   = loadData(processor,corrfilename,zone,[],[],[],[]);
     corStruct = loadISCE(corrfilename,zone,limitny,azo,0);
     cor         = corStruct.data;
