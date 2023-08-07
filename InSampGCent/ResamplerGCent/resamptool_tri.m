@@ -22,8 +22,6 @@ end
 
 datastruct  = heightscale(datastruct,demfilename);
 
-
-
 %load fault
 faultstruct=[];
 for i=1:length(faultfilename)
