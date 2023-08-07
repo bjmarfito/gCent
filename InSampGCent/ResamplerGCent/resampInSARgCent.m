@@ -14,6 +14,7 @@ datastruct = loadData(processor,datafilename,zone,limitny,azo,const_los,losfilen
     corStruct = loadISCE(corrfilename,zone,limitny,azo,0);
     cor         = corStruct.data;
     data        = datastruct.data;
+    disp("Adding red noise to data")
     corId       = find(cor<=corThresh);
     data(corId)    = NaN;
     

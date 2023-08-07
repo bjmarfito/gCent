@@ -47,15 +47,13 @@ savestructname    = [resampDir '/' datePair '_' path '.mat'];
 
 
 fid = fopen([resampDir '/resamp_in.m'],'w');
-
 fprintf(fid,'datafilename       = ''%s'';\n', datafilename);
 fprintf(fid,'losfilename        = ''%s'';\n', losfilename);
-fprintf(fid,'corrfilename       = '''';\n');
+fprintf(fid,'corrfilename       = ''%s'';\n', corrfilename);
 fprintf(fid,'demfilename        = ''%s'';\n', demfilename);
 fprintf(fid,'faultfilename      = ''%s'';\n', faultfilename);
 fprintf(fid,'savestructname     = ''%s'';\n', savestructname);
 fprintf(fid,'processor          = ''%s'';\n', processor);
-%fprintf(fid,'processor          = ''%s'';\n', 'ISCEMINTPY');
 fprintf(fid,'iscestack          = ''%s'';\n', iscestack);
 fprintf(fid,'nx                 = 0;\n');
 fprintf(fid,'ny                 = 0;\n');
