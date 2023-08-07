@@ -14,8 +14,9 @@ if perturbrednoise == 'y'
     disp("Adding red noise")
     redNoiseAdd = rednoise(X,Y,1.33) ./ 100;
     datastruct.data = datastruct.data + redNoiseAdd;
-    save redNoiseAdd [resampDir '/redNoiseAdd.mat']
-    clear redNoiseAdd
+    redNoiseDir = [resampDir '/redNoiseAdd.mat'];
+    save redNoiseAdd redNoiseDir
+    clear redNoiseAdd redNoiseDir
 end
 
 if exist(corrfilename)
