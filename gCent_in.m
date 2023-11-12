@@ -26,7 +26,6 @@ iscestack       = 'topsStack';                                              % Sp
 opticalDataFilesEW  = {};
 opticalDataFilesNS  = {};
 gpsTimeSeriesDir    = {};
-perturbrednoise = 'n';                                                      % 'y' if perturbing the data with red noise
 
 WORKDIR             = ['/Users/wbarnhart/Work_local/EQmonitoring/' eventID];
 
